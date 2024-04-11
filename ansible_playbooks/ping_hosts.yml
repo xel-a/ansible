@@ -1,0 +1,39 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  become: no
+  ignore_errors: yes
+  tasks:
+    - block:
+        - debug:
+            var: ansible_play_hosts_all
+        - debug:
+            var: ansible_play_hosts
+        - set_fact:
+            down: "{{ansible_play_hosts_all|difference(ansible_play_hosts)|join(' -- DOWN\n')}}"
+      run_once: true
+      # block:
+       #- command: echo OK
+       #- assert: 
+       #    that:
+       #      - ansible_play_hosts == ansible_play_hosts_all 
+       # - name: Forcing a failure
+       #   command: /bin/false
+          
+       # - name: Unreachable message
+       #   debug:
+       #     msg: 'Cannot be reached'
+     
+      # rescue:
+    - name: Send email
+      community.general.mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ignacioaxelrom@gmail.com
+        password: oxxc xhra vniv srfu
+        to: Axel Ignacio <ignacioaxelrom@gmail.com>
+        subject: Ansible-report
+        body: "{{down}} -- DOWN"
+      delegate_to: localhost
+      run_once: true

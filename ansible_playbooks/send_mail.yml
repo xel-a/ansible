@@ -1,0 +1,24 @@
+---
+- name: Send mail playbook
+  hosts: routers
+  gather_facts: no
+  tasks:
+    - name: "Get logs"
+      ios_command:
+        commands:
+          - "show log | include administratively down"
+      register: result
+
+    - name: Send email
+      community.general.mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ignacioaxelrom@gmail.com
+        password: oxxc xhra vniv srfu
+        to: Axel Ignacio <ignacioaxelrom@gmail.com>
+        subject: Ansible Report
+        body: "{{result.stdout_lines}}"
+      delegate_to: localhost
+      run_once: true
+     
+

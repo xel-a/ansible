@@ -1,0 +1,33 @@
+---
+
+- hosts: linux
+  become: true
+  tasks:
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+
+  - name: install vim package
+    apt:
+      name: vim
+
+  - name: install curl package
+    apt:
+      name: curl
+
+  - name: install psmisc package
+    apt:
+      name: psmisc
+
+  - name: install net-tools
+    apt:
+      name: net-tools
+
+  - name: install aptitude
+    apt:
+      name: aptitude
+
+  - name: install python3-apt
+    apt:
+      name: python3-apt

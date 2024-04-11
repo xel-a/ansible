@@ -1,0 +1,14 @@
+---
+- name: "Get router logs"
+  hosts: routers
+  gather_facts: no
+  tasks:
+    - name: "Get logs"
+      ios_command:
+        commands:
+          - "show log | include administratively down"
+      register: result
+ 
+    - name: "Show logs"
+      debug:
+        msg: "{{result.stdout_lines}}"

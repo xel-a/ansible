@@ -1,0 +1,19 @@
+- hosts: linux
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Changing hostname
+      hostname:
+        name: '{{hostname}}'
+      register: result
+
+    - name: Modify hosts file
+      lineinfile:
+        path: /etc/hosts
+        regexp: '127.0.1.1'
+        line: '127.0.1.1 {{hostname}} {{hostname}}'
+      when: result.changed
+
+    - name: Rebooting host
+      reboot:
+      when: result.changed
