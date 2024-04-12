@@ -1,0 +1,1 @@
+[["GigabitEthernet2       unassigned      YES NVRAM  administratively down down"]]

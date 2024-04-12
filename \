@@ -3,21 +3,12 @@ LIN1 ansible_host=192.168.199.131 hostname=APPLIX-LINUXHOST-001
 LIN2 ansible_host=192.168.199.137 hostname=APPLIX-LINUXHOST-002
 LIN3 ansible_host=192.168.199.138 hostname=APPLIX-LINUXHOST-003
 
-[core_switch]
-core ansible_host=192.168.180.1
-
-[core_switch:vars]
-ansible_user=kitang
-ansible_password=M@st3r@cc355
-ansible_connection=network_cli
-ansible_network_os=ios
-ansible_port=22
-
 [routers]
-R1 ansible_host=devnetsandboxiosxe.cisco.com hostname=ROUTER-001
+R1 ansible_host=10.10.20.48 hostname=ROUTER-001
+R2 ansible_host=devnetsandboxiosxe.cisco.com hostname=ROUTER-001
 
 [routers:vars]
-ansible_user=admin
+ansible_user=developer
 ansible_password=C1sco12345
 ansible_connection=network_cli
 ansible_network_os=ios

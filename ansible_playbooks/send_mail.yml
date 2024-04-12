@@ -1,24 +1,39 @@
 ---
 - name: Send mail playbook
+  connection: local
   hosts: routers
   gather_facts: no
   tasks:
     - name: "Get logs"
       ios_command:
         commands:
-          - "show log | include administratively down"
+          - "show ip int br | include down"
       register: result
+    - set_fact:
+        down: "{{result.stdout_lines}}"
 
-    - name: Send email
-      community.general.mail:
-        host: smtp.gmail.com
-        port: 587
-        username: ignacioaxelrom@gmail.com
-        password: oxxc xhra vniv srfu
-        to: Axel Ignacio <ignacioaxelrom@gmail.com>
-        subject: Ansible Report
-        body: "{{result.stdout_lines}}"
-      delegate_to: localhost
-      run_once: true
-     
+    - name: "Write log file"
+      copy:
+        content: "{{result.stdout_lines}}"
+        dest: "/home/giyuu/Git/ansible/logs/down_server_logs.txt"
 
+    - name: "Run python script"
+      command:  "python3 /home/giyuu/Git/ansible/python_scripts/process_down_servers.py"
+#      register: output
+
+#    - name: Send email
+#      mail:
+#        host: smtp.gmail.com
+#        port: 587
+#        username: ignacioaxelrom@gmail.com
+#        password: oxxc xhra vniv srfu
+#        to: Axel Ignacio <ignacioaxelrom@gmail.com>
+#        subject: Ansible Report
+#        body: "{{output.stdout_lines}}"
+#      delegate_to: localhost
+#      run_once: true
+#      when: down[0][0] | length > 0
+
+#    - name: "Debug"
+#      debug:
+#        var: output.stdout_lines
